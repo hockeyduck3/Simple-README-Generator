@@ -22,8 +22,8 @@ function generateMarkdown(data) {
 
   // Same goes for these down here. I chose to keep these seperate just so they'd be easier to read.
   
-  string += `\n## Installation\n\n${data.install}\n\n`;
-  string += `\n## Usage\n\n${data.usage}\n\n`;
+  string += `\n## Installation\n\n>${data.install}\n\n`;
+  string += `\n## Usage\n\n>${data.usage}\n\n`;
 
   if (data.contributeTrueOrFalse) {
     string += '\n## Contributing\n';
