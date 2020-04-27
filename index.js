@@ -1,4 +1,5 @@
-const fs = require("fs")
+const fs = require("fs");
+const axios = require("axios");
 const inquirer = require("inquirer");
 const generateMarkdown = require("./utils/generateMarkdown.js");
 
@@ -74,7 +75,15 @@ function writeToFile(fileName, data) {
 
 function init() {
     inquirer.prompt(questions).then(function (answers) {
-        writeToFile(`${answers.title}-README.md`, answers);
+        const queryUrl = `https://api.github.com/users/${answers.githubName}`
+
+        axios.get(queryUrl).then(function (response) {
+            answers.name = response.data.name;
+
+            writeToFile(`${answers.title}-README.md`, answers);
+        }).catch(function () {
+            writeToFile(`${answers.title}-README.md`, answers);
+        })
     });
 }
 

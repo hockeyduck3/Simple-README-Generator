@@ -29,7 +29,12 @@ function generateMarkdown(data) {
     string += `\n## Credits\n\n${data.creditor}\n\n`;
   }
 
-  string += `\n## License\n\nCopyright (c) ${data.githubName} All rights reserved.\n\n`;
+  if (data.name === undefined) {
+    string += `\n## License\n\nCopyright (c) ${data.githubName} All rights reserved.\n`;
+  } else {
+    string += `\n## License\n\nCopyright (c) ${data.name} All rights reserved.\n`;
+  }
+
 
   if (data.license !== 'No license') {
     string += `\nLicensed under the ${data.license} license.`
