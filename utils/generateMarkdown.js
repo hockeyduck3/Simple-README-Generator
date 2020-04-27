@@ -11,8 +11,8 @@ function generateMarkdown(data) {
     tableString += '\n* [Installation](#installation)\n';
     tableString += '\n* [Usage](#usage)\n';
 
-    if (data.creditTrueOrFalse) {
-      tableString += '\n* [Credits](#credits)\n';
+    if (data.contributeTrueOrFalse) {
+      tableString += '\n* [Contributing](#contributing)\n';
     }
 
     tableString += '\n* [License](#license)\n'
@@ -25,14 +25,18 @@ function generateMarkdown(data) {
   string += `\n## Installation\n\n${data.install}\n\n`;
   string += `\n## Usage\n\n${data.usage}\n\n`;
 
-  if (data.creditTrueOrFalse) {
-    string += `\n## Credits\n\n${data.creditor}\n\n`;
+  if (data.contributeTrueOrFalse) {
+    string += '\n## Contributing\n';
+
+    for (let i = 0; i < data.contributeSteps; i++) {
+      string += `\n### Step ${i + 1}\n\n* ${data[`step${i + 1}`]}\n`
+    }
   }
 
   if (data.name === undefined) {
-    string += `\n## License\n\nCopyright (c) ${data.githubName} All rights reserved.\n`;
+    string += `\n\n## License\n\nCopyright (c) ${data.githubName} All rights reserved.\n`;
   } else {
-    string += `\n## License\n\nCopyright (c) ${data.name} All rights reserved.\n`;
+    string += `\n\n## License\n\nCopyright (c) ${data.name} All rights reserved.\n`;
   }
 
 

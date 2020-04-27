@@ -47,15 +47,15 @@ const questions = [
     },
     {
         type: 'confirm',
-        message: 'Would you like to list any credits?',
-        name: 'creditTrueOrFalse'
+        message: 'Would you like a list on how to contribute?',
+        name: 'contributeTrueOrFalse'
     }, {
         when: function (response) {
-          return response.creditTrueOrFalse;
+          return response.contributeTrueOrFalse;
         },
         type: 'input',
-        message: 'Who would you like to credit?',
-        name: 'creditor'
+        message: 'How many steps would you like to list?',
+        name: 'contributeSteps'
     },
     {
         type: 'list',
@@ -75,15 +75,46 @@ function writeToFile(fileName, data) {
 
 function init() {
     inquirer.prompt(questions).then(function (answers) {
-        const queryUrl = `https://api.github.com/users/${answers.githubName}`
+        var number = 0
 
-        axios.get(queryUrl).then(function (response) {
-            answers.name = response.data.name;
+        answers.contributeSteps = parseInt(answers.contributeSteps);
 
-            writeToFile(`${answers.title}-README.md`, answers);
-        }).catch(function () {
-            writeToFile(`${answers.title}-README.md`, answers);
-        })
+        if (answers.contributeTrueOrFalse) {
+            contributeFunc();
+
+            function contributeFunc() {
+                number++
+                
+                inquirer.prompt([
+                    {
+                        type: 'input',
+                        message: `What would you like step ${number} to say?`,
+                        name: `step${number}`,
+                        validate: titleValidation
+                    }
+                ]).then((contributeRes) => {
+                    answers[`step${number}`] = contributeRes[`step${number}`];
+
+                    if (number === answers.contributeSteps) {
+                        runAxios();
+                    } else {
+                        contributeFunc();
+                    }
+                })
+            }
+            
+            function runAxios() {
+                const queryUrl = `https://api.github.com/users/${answers.githubName}`
+            
+                axios.get(queryUrl).then(function (response) {
+                    answers.name = response.data.name;
+            
+                    writeToFile(`${answers.title}-README.md`, answers);
+                }).catch(function () {
+                    writeToFile(`${answers.title}-README.md`, answers);
+                })
+            }
+        }
     });
 }
 
