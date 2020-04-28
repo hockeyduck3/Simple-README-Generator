@@ -14,14 +14,14 @@ const titleValidation = async (input) => {
 const questions = [
     {
         type: 'input',
-        message: 'What is your github name?',
+        message: 'What is your Github name?',
         name: 'githubName',
         validate: titleValidation
     },
     {
         type: 'input',
-        message: 'What is name of your project?',
-        name: 'title',
+        message: 'What is the name of your Github repo?',
+        name: 'githubRepo',
         validate: titleValidation
     },
     {
@@ -75,7 +75,7 @@ function writeToFile(fileName, data) {
 
 function init() {
     inquirer.prompt(questions).then(function (answers) {
-        var number = 0
+        var number = 0;
 
         answers.contributeSteps = parseInt(answers.contributeSteps);
 
@@ -83,7 +83,7 @@ function init() {
             contributeFunc();
 
             function contributeFunc() {
-                number++
+                number++;
                 
                 inquirer.prompt([
                     {
@@ -109,9 +109,9 @@ function init() {
                 axios.get(queryUrl).then(function (response) {
                     answers.name = response.data.name;
             
-                    writeToFile(`${answers.title}-README.md`, answers);
+                    writeToFile(`${answers.githubRepo}-README.md`, answers);
                 }).catch(function () {
-                    writeToFile(`${answers.title}-README.md`, answers);
+                    writeToFile(`${answers.githubRepo}-README.md`, answers);
                 })
             }
         }

@@ -1,7 +1,8 @@
 function generateMarkdown(data) {
-  let string = `# ${data.title}\n`
+  let string = `# ${data.githubRepo}\n\n![repo size](https://img.shields.io/github/repo-size/${data.githubName}/${data.githubRepo})\n`;
+  
+  string += `\n## Description\n${data.description}\n`;
 
-  string += `\n## Description\n\n${data.description}\n`;
 
   if (data.table) {
     // I chose to have these seperate instead of in one string just for readability
@@ -22,21 +23,21 @@ function generateMarkdown(data) {
 
   // Same goes for these down here. I chose to keep these seperate just so they'd be easier to read.
   
-  string += `\n## Installation\n\n>${data.install}\n\n`;
-  string += `\n## Usage\n\n>${data.usage}\n\n`;
+  string += '\n## Installation\n' + '```sh\n' + data.install + '\n```\n';
+  string += '\n## Usage\n' + '```sh\n' + data.usage + '\n```\n';
 
   if (data.contributeTrueOrFalse) {
     string += '\n## Contributing\n';
 
     for (let i = 0; i < data.contributeSteps; i++) {
-      string += `\n### Step ${i + 1}\n\n* ${data[`step${i + 1}`]}\n`
+      string += `\n### Step ${i + 1}\n* ${data[`step${i + 1}`]}\n`
     }
   }
 
   if (data.name === undefined) {
-    string += `\n\n## License\n\nCopyright (c) ${data.githubName} All rights reserved.\n`;
+    string += `\n## License\nCopyright (c) ${data.githubName} All rights reserved.\n`;
   } else {
-    string += `\n\n## License\n\nCopyright (c) ${data.name} All rights reserved.\n`;
+    string += `\n## License\nCopyright (c) ${data.name} All rights reserved.\n`;
   }
 
 
