@@ -45,9 +45,24 @@ const questions = [
     },
     {
         type: 'input',
-        message: 'How does a user install your project?',
+        message: 'What command does the user need to run to install needed dependencies?',
         name: 'install',
-        default: 'npm i'
+        default: 'npm i',
+        validate: fieldValidation
+    },
+    {
+        type: 'confirm',
+        message: 'Would you like to include a Tests section?',
+        name: 'testsTrueorFalse'
+    }, {
+        when: function (response) {
+          return response.testsTrueorFalse;
+        },
+        type: 'input',
+        message: 'What command does the user need to test your program?',
+        name: 'testsContent',
+        default: 'npm test',
+        validate: fieldValidation
     },
     {
         type: 'input',
@@ -73,7 +88,7 @@ const questions = [
         message: 'How many steps would you like to list?',
         name: 'contributeSteps',
         validate: numberValidation
-    },
+    }
 ];
 
 function writeToFile(fileName, data) {
@@ -112,18 +127,20 @@ function init() {
                     }
                 })
             }
-            
-            function runAxios() {
-                const queryUrl = `https://api.github.com/users/${answers.githubName}`
-            
-                axios.get(queryUrl).then(function (response) {
-                    answers.name = response.data.name;
-            
-                    writeToFile(`${answers.githubRepo}-README.md`, answers);
-                }).catch(function () {
-                    writeToFile(`${answers.githubRepo}-README.md`, answers);
-                })
-            }
+        } else {
+            runAxios();
+        }
+
+        function runAxios() {
+            const queryUrl = `https://api.github.com/users/${answers.githubName}`
+        
+            axios.get(queryUrl).then(function (response) {
+                answers.name = response.data.name;
+        
+                writeToFile(`${answers.githubRepo}-README.md`, answers);
+            }).catch(function () {
+                writeToFile(`${answers.githubRepo}-README.md`, answers);
+            })
         }
     });
 }
