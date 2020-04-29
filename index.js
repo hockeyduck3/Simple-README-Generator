@@ -3,9 +3,17 @@ const axios = require("axios");
 const inquirer = require("inquirer");
 const generateMarkdown = require("./utils/generateMarkdown.js");
 
-const titleValidation = async (input) => {
+const fieldValidation = async (input) => {
     if (input === '') {
        return 'Field cannot be left blank';
+    }
+
+    return true;
+}
+
+const numberValidation = async (input) => {
+    if (!input.match(/[0-9]/)) {
+        return 'Field must be a number'
     }
 
     return true;
@@ -16,19 +24,19 @@ const questions = [
         type: 'input',
         message: 'What is your Github name?',
         name: 'githubName',
-        validate: titleValidation
+        validate: fieldValidation
     },
     {
         type: 'input',
         message: 'What is the name of your Github repo?',
         name: 'githubRepo',
-        validate: titleValidation
+        validate: fieldValidation
     },
     {
         type: 'input',
-        message: 'Make a short description for your project',
+        message: 'Please make a short description for your project',
         name: 'description',
-        validate: titleValidation
+        validate: fieldValidation
     },
     {
         type: 'confirm',
@@ -38,12 +46,20 @@ const questions = [
     {
         type: 'input',
         message: 'How does a user install your project?',
-        name: 'install'
+        name: 'install',
+        default: 'npm i'
     },
     {
         type: 'input',
         message: 'How is your project supposed to be used?',
         name: 'usage'
+    },
+    {
+        type: 'list',
+        message: 'What type of license would you like to use?',
+        name: 'license',
+        default: 'Use arrow key to navigate',
+        choices: ['MIT', 'GPL 3.0', 'APACHE 2.0', 'BSD 3', 'No license']
     },
     {
         type: 'confirm',
@@ -55,14 +71,9 @@ const questions = [
         },
         type: 'input',
         message: 'How many steps would you like to list?',
-        name: 'contributeSteps'
+        name: 'contributeSteps',
+        validate: numberValidation
     },
-    {
-        type: 'list',
-        message: 'Finally, what type of license would you like to use?',
-        name: 'license',
-        choices: ['MIT', 'GNU', 'No license']
-    }
 ];
 
 function writeToFile(fileName, data) {
@@ -89,8 +100,7 @@ function init() {
                     {
                         type: 'input',
                         message: `What would you like step ${number} to say?`,
-                        name: `step${number}`,
-                        validate: titleValidation
+                        name: `step${number}`
                     }
                 ]).then((contributeRes) => {
                     answers[`step${number}`] = contributeRes[`step${number}`];
