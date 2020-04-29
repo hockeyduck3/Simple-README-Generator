@@ -3,6 +3,7 @@ const axios = require("axios");
 const inquirer = require("inquirer");
 const generateMarkdown = require("./utils/generateMarkdown.js");
 
+// In case the user tries to leave the field blank
 const fieldValidation = async (input) => {
     if (input === '') {
        return 'Field cannot be left blank';
@@ -11,6 +12,7 @@ const fieldValidation = async (input) => {
     return true;
 }
 
+// In case the user tries to type in something other than a number
 const numberValidation = async (input) => {
     if (!input.match(/[0-9]/)) {
         return 'Field must be a number'
@@ -103,18 +105,21 @@ function init() {
     inquirer.prompt(questions).then(function (answers) {
         var number = 0;
 
+        // Have to use parseInt here because it saves the user's number answer as a string
         answers.contributeSteps = parseInt(answers.contributeSteps);
 
+        // If the user wants a contribute section
         if (answers.contributeTrueOrFalse) {
             contributeFunc();
 
+            // This function will continue to ask the user what they want step 1,2,3 to say or however many steps they input
             function contributeFunc() {
                 number++;
                 
                 inquirer.prompt([
                     {
                         type: 'input',
-                        message: `What would you like step ${number} to say?`,
+                        message: `What would you like Step ${number} to say?`,
                         name: `step${number}`
                     }
                 ]).then((contributeRes) => {
@@ -126,11 +131,12 @@ function init() {
                         contributeFunc();
                     }
                 })
-            }
+            }   
         } else {
             runAxios();
         }
 
+        // This function will make a quick api call to github and grab the user's name from their github profile and use that instead of their username
         function runAxios() {
             const queryUrl = `https://api.github.com/users/${answers.githubName}`
         
