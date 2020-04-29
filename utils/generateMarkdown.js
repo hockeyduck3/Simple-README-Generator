@@ -1,9 +1,36 @@
 function generateMarkdown(data) {
-  let title = data.githubRepo.replace(/-/g, " ")
+  // This variable will always be true, unless the user chose 'No license', then after the switch statement runs this variable will be equal to false.
+  var license = true;
 
-  let string = `# ${title}\n\n[![repo size](https://img.shields.io/github/repo-size/${data.githubName}/${data.githubRepo})](https://github.com/${data.githubName}/${data.githubRepo})\n`;
+  let string = `# ${data.githubRepo.replace(/-/g, " ")}\n`;
+
+  // Repo badge
+  string += `\n[![repo size](https://img.shields.io/github/repo-size/${data.githubName}/${data.githubRepo})](https://github.com/${data.githubName}/${data.githubRepo})`;
   
-  string += `\n## Description\n\n${data.description}\n`;
+  // Switch for the licenseLink
+  switch (data.license) {
+    case 'MIT':
+      var licenseLink = 'mit-license.php';
+      break;
+    case 'GPL 3.0':
+      var licenseLink = 'GPL-3.0';
+      break;
+    case 'APACHE 2.0':
+      var licenseLink = 'Apache-2.0';
+      break;
+    case 'BSD 3':
+      var licenseLink = 'BSD-3-Clause';
+      break;
+    default:
+      license = false;
+  }
+
+  // As long as the user selected a license, this badge will go right next to the repo badge.
+  if (license) {
+    string += ` [![Github license](https://img.shields.io/badge/license-${data.license.replace(/\b \b/g, "%20")}-blue.svg)](https://opensource.org/licenses/${licenseLink})`;
+  }
+
+  string += `\n\n## Description\n\n${data.description}\n`;
 
 
   // If the user wants a table of content
@@ -62,9 +89,9 @@ function generateMarkdown(data) {
   string += `\n## Questions\n\nIf you have any questions, please open an issue or contact [${name}](https://github.com/${data.githubName}).\n`;
   string += `\n## License\nCopyright (c) ${name} All rights reserved.\n`;
 
-  // If the user chose to have a license
-  if (data.license !== 'No license') {
-    string += `\nLicensed under the ${data.license} license.`
+  // As long as the user chose a license, this is statement will run.
+  if (license) {
+    string += `\nLicensed under the [${data.license}](https://opensource.org/licenses/${licenseLink}) license.`
   }
 
   return string;
