@@ -132,6 +132,7 @@ function init() {
                     answers[`step${number}`] = contributeRes[`step${number}`];
 
                     if (number === answers.contributeSteps) {
+                        // This will check and see if the user wants their real name or not
                         if (answers.realName) {
                             runAxios();
                         } else {
@@ -141,8 +142,11 @@ function init() {
                         contributeFunc();
                     }
                 })
-            }   
+            }
+            
+          // If the user chose not to have a contributing section 
         } else {
+            // Then check and see if the user wanted their real name or their github name
             if (answers.realName) {
                 runAxios();
             } else {
@@ -150,7 +154,7 @@ function init() {
             }
         }
 
-        // This function will make a quick api call to github and grab the user's name from their github profile and use that instead of their username
+        // This function will make a quick api call to github and grab the user's name from their github profile and use that instead of their github username
         function runAxios() {
             const queryUrl = `https://api.github.com/users/${answers.githubName}`
         
@@ -158,6 +162,8 @@ function init() {
                 answers.name = response.data.name;
         
                 writeToFile(`${answers.githubRepo}-README.md`, answers);
+
+                // If the api had an error then just go ahead and run the function
             }).catch(function () {
                 writeToFile(`${answers.githubRepo}-README.md`, answers);
             })
