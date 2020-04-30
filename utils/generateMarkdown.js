@@ -2,6 +2,9 @@ function generateMarkdown(data) {
   // This variable will always be true, unless the user chose 'No license', then after the switch statement runs this variable will be equal to false.
   var license = true;
 
+  // By default the README will use the user's github name unless they choose to have their real name instead
+  var name = data.githubName;
+
   let string = `# ${data.githubRepo.replace(/-/g, " ")}\n`;
 
   // Repo badge
@@ -79,11 +82,12 @@ function generateMarkdown(data) {
     string += `\n## Tests\n\n>To run tests, run this command:\n\n\`\`\`\n${data.testsContent}\n\`\`\`\n`;
   }
 
-  // Just in case if the user doesn't have their name on their github profile
-  if (data.name === undefined) {
-    var name = data.githubName;
-  } else {
-    var name = data.name;
+  // If the user chose to have their real name on the README instead of their github username
+  if (data.realName) {
+    // Check and make sure the user actually has their name on their github profile
+    if (data.name !== undefined) {
+      name = data.name;
+    }
   }
 
   string += `\n## Questions\n\nIf you have any questions, please open an issue or contact [${name}](https://github.com/${data.githubName}).\n`;
