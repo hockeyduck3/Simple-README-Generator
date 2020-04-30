@@ -35,6 +35,11 @@ const questions = [
         validate: fieldValidation
     },
     {
+        type: 'confirm',
+        message: 'Would you like to use your real name on the README?',
+        name: 'realName'
+    },
+    {
         type: 'input',
         message: 'Please make a short description for your project',
         name: 'description',
@@ -69,7 +74,8 @@ const questions = [
     {
         type: 'input',
         message: 'How is your project supposed to be used?',
-        name: 'usage'
+        name: 'usage',
+        validate: fieldValidation
     },
     {
         type: 'list',
@@ -126,14 +132,22 @@ function init() {
                     answers[`step${number}`] = contributeRes[`step${number}`];
 
                     if (number === answers.contributeSteps) {
-                        runAxios();
+                        if (answers.realName) {
+                            runAxios();
+                        } else {
+                            writeToFile(`${answers.githubRepo}-README.md`, answers);
+                        }
                     } else {
                         contributeFunc();
                     }
                 })
             }   
         } else {
-            runAxios();
+            if (answers.realName) {
+                runAxios();
+            } else {
+                writeToFile(`${answers.githubRepo}-README.md`, answers);
+            }
         }
 
         // This function will make a quick api call to github and grab the user's name from their github profile and use that instead of their username
