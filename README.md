@@ -4,7 +4,7 @@
 
 ## Description
 
-This project was an assignment for my Full-Stack web development course. It was designed to make simple README files, this README was made using the project as well! It's using [inquirer npm](https://www.npmjs.com/package/inquirer) for the questions. I do hope to come back to this project and make it even better!
+This project was an assignment for my Full-Stack web development course. It was designed to make simple README files, this README was made using the code from this repo as well! I'm using [inquirer npm](https://www.npmjs.com/package/inquirer) for the questions, [axios npm](https://www.npmjs.com/package/axios) for the api call, and the rest is just regular Javascript. I do hope to come back to this project and make it even better in the future!
 
 ## Table of contents
 
