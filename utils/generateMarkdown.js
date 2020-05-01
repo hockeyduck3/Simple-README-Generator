@@ -1,4 +1,6 @@
 function generateMarkdown(data) {
+  // I chose to do string += everything just for readability. The aplication still functions the same as it would if it was done a differrent way. 
+
   // This variable will always be true, unless the user chose 'No license', then after the switch statement runs this variable will be equal to false.
   var license = true;
 
@@ -38,7 +40,6 @@ function generateMarkdown(data) {
 
   // If the user wants a table of content
   if (data.table) {
-    // I chose to have these seperate instead of in one string just for readability
     string += '\n## Table of contents\n';
 
     string += '\n* [Installation](#installation)\n';
@@ -56,7 +57,6 @@ function generateMarkdown(data) {
     string += '\n* [License](#license)\n'
   }
 
-  // Same goes for these down here. I chose to keep these seperate just so they'd be easier to read.
   string += `\n## Installation\n\n>To install the needed dependencies, run this command:\n\n\`\`\`\n${data.install}\n\`\`\`\n`;
   string += `\n## Usage\n\n${data.usage}\n`;
 
